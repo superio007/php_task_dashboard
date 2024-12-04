@@ -54,12 +54,12 @@
                 <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
                   <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
                   <div class="row mt-3">
-                    <div class="col-2 text-center ms-auto">
+                    <div class="col-2 text-center ms-auto Microsoft">
                       <a class="btn btn-link px-3" href="javascript:;">
                         <i class="fa-brands fa-windows text-white text-lg"></i>
                       </a>
                     </div>
-                    <div class="col-2 text-center px-1">
+                    <div class="col-2 text-center px-1 Yahoo">
                       <a class="btn btn-link px-3" href="javascript:;">
                         <i class="fa-brands fa-yahoo text-white text-lg"></i>
                       </a>
@@ -122,7 +122,8 @@
       getAuth,
       signInWithEmailAndPassword,
       signInWithPopup,
-      GoogleAuthProvider
+      GoogleAuthProvider,
+      OAuthProvider
     } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
     const firebaseConfig = {
       apiKey: "AIzaSyD4fWIT9UB0RSSehDYFMdIRf9U-_0WKBdc",
@@ -137,7 +138,37 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const provider = new GoogleAuthProvider();
+    const yahooProvider = new OAuthProvider('yahoo.com');
+    const microsoftProvider = new OAuthProvider('microsoft.com');
+
     const auth = getAuth();
+    // For Microsoft
+    document.querySelector('.Microsoft').addEventListener("click", (event) => {
+      event.preventDefault();
+      console.log("microsoft opening");
+      signInWithPopup(auth, microsoftProvider)
+        .then((result) => {
+          // User is signed in.
+          // IdP data available in result.additionalUserInfo.profile.
+
+          // Get the OAuth access token and ID Token
+          const credential = OAuthProvider.credentialFromResult(result);
+          const accessToken = credential.accessToken;
+          const idToken = credential.idToken;
+          const user = result.user;
+          localStorage.setItem('userCredential', JSON.stringify(user));
+          console.log(credential);
+          console.log(accessToken);
+          console.log(idToken);
+          window.location.href = "index.php";
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error(errorMessage);
+        });
+    })
     document.getElementById('loginbtn').addEventListener('click', (event) => {
       event.preventDefault();
       console.log("Log in");
@@ -149,7 +180,7 @@
           const user = userCredential.user;
           localStorage.setItem("userCredential", JSON.stringify(user));
           console.log(user);
-          window.location.href = "dashboard.php";
+          window.location.href = "index.php";
           // ...
         })
         .catch((error) => {
@@ -170,7 +201,7 @@
           const user = result.user;
           localStorage.setItem("userCredential", JSON.stringify(user));
           console.log(user);
-          window.location.href = "dashboard.php";
+          window.location.href = "index.php";
           // ...
         })
         .catch((error) => {
@@ -179,6 +210,30 @@
           const errorMessage = error.message;
         });
     });
+    // for yahoo
+    document.querySelector('.Yahoo').addEventListener("click", (event) => {
+      event.preventDefault();
+      console.log("yahoo opening");
+      signInWithPopup(auth, yahooProvider)
+        .then((result) => {
+          const credential = OAuthProvider.credentialFromResult(result);
+          const accessToken = credential.accessToken;
+          const idToken = credential.idToken;
+          const user = result.user;
+          localStorage.setItem('userCredential', JSON.stringify(user));
+          console.log(credential);
+          console.log(accessToken);
+          console.log(idToken);
+          window.location.href = "index.php";
+
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+        });
+    })
   </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>

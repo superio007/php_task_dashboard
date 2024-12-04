@@ -45,10 +45,10 @@
                   <p class="mb-0">Enter your email and password to register</p>
                 </div>
                 <div class="d-flex gap-3">
-                  <div class="col-2 text-center ms-auto">
+                  <div class="col-2 text-center ms-auto Microsoft">
                     <i class="fa-brands fa-windows text-white text-lg" style="color: #000 !important; "></i>
                   </div>
-                  <div class="col-2 text-center px-1">
+                  <div class="col-2 text-center px-1 Yahoo">
                     <i class="fa-brands fa-yahoo text-white text-lg" style="color: #000 !important;"></i>
                   </div>
                   <div class="col-2 text-center me-auto google">
@@ -113,15 +113,10 @@
     import {
       getAuth,
       signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
       signInWithPopup,
-      GoogleAuthProvider
+      GoogleAuthProvider,
+      OAuthProvider
     } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
       apiKey: "AIzaSyD4fWIT9UB0RSSehDYFMdIRf9U-_0WKBdc",
       authDomain: "kiran-dhoke.firebaseapp.com",
@@ -131,29 +126,58 @@
       appId: "1:80606582129:web:fe2650726e2ff4c33492d0",
       measurementId: "G-CTVCT4S1Y2"
     };
+
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const provider = new GoogleAuthProvider();
+    const yahooProvider = new OAuthProvider('yahoo.com');
+    const microsoftProvider = new OAuthProvider('microsoft.com');
+
     const auth = getAuth();
-    // email sign up for registration
-    document.getElementById("SignBtn").addEventListener("click", (event) => {
+    // For Microsoft
+    document.querySelector('.Microsoft').addEventListener("click", (event) => {
       event.preventDefault();
-      console.log("Sign in");
-      let name = document.getElementById("name").value;
-      let email = document.getElementById("email").value;
-      let password = document.getElementById("password").value;
-      createUserWithEmailAndPassword(auth, email, password)
+      console.log("microsoft opening");
+      signInWithPopup(auth, microsoftProvider)
+        .then((result) => {
+          // User is signed in.
+          // IdP data available in result.additionalUserInfo.profile.
+
+          // Get the OAuth access token and ID Token
+          const credential = OAuthProvider.credentialFromResult(result);
+          const accessToken = credential.accessToken;
+          const idToken = credential.idToken;
+          const user = result.user;
+          localStorage.setItem('userCredential', JSON.stringify(user));
+          console.log(credential);
+          console.log(accessToken);
+          console.log(idToken);
+          window.location.href = "index.php";
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error(errorMessage);
+        });
+    })
+    document.getElementById('SignBtn').addEventListener('click', (event) => {
+      event.preventDefault();
+      console.log("Log in");
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed up
+          // Signed in
           const user = userCredential.user;
-          console.log("sign up verified", user);
-          // Update the display name after registration
+          localStorage.setItem("userCredential", JSON.stringify(user));
+          console.log(user);
+          window.location.href = "index.php";
+          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log("error", errorCode, errorMessage);
-          alert(errorMessage);
         });
     });
     // for google popup and registration
@@ -169,7 +193,7 @@
           const user = result.user;
           localStorage.setItem("userCredential", JSON.stringify(user));
           console.log(user);
-          window.location.href = "dashboard.php";
+          window.location.href = "index.php";
           // ...
         })
         .catch((error) => {
@@ -178,6 +202,30 @@
           const errorMessage = error.message;
         });
     });
+    // for yahoo
+    document.querySelector('.Yahoo').addEventListener("click", (event) => {
+      event.preventDefault();
+      console.log("yahoo opening");
+      signInWithPopup(auth, yahooProvider)
+        .then((result) => {
+          const credential = OAuthProvider.credentialFromResult(result);
+          const accessToken = credential.accessToken;
+          const idToken = credential.idToken;
+          const user = result.user;
+          localStorage.setItem('userCredential', JSON.stringify(user));
+          console.log(credential);
+          console.log(accessToken);
+          console.log(idToken);
+          window.location.href = "index.php";
+
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+        });
+    })
   </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
