@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Material Dashboard 3 - v3.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +7,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Material Dashboard 3 by Creative Tim
+    Dashboard by Kiran Dhoke
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
@@ -475,7 +461,24 @@
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      if (localStorage.getItem("userCredential")) {} else {
+      if (localStorage.getItem("userCredential")) {
+        document.getElementById("login-Div").innerHTML = `
+                        <a class="nav-link text-dark" id="logout">
+                            <i class="material-symbols-rounded opacity-5">assignment</i>
+                            <span class="nav-link-text ms-1">Logout</span>
+                        </a>
+                    `;
+        document.getElementById("logout").addEventListener("click", function() {
+          localStorage.removeItem("userCredential");
+          window.location.href = "sign-in.php";
+        });
+      } else {
+        document.getElementById("login-Div").innerHTML = `
+                    <a class="nav-link text-dark" href="sign-in.php">
+                        <i class="material-symbols-rounded opacity-5">assignment</i>
+                        <span class="nav-link-text ms-1">Log In</span>
+                    </a>
+                `;
         window.location.href = "sign-in.php";
       }
       var win = navigator.platform.indexOf('Win') > -1;
