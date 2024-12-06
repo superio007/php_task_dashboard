@@ -404,7 +404,26 @@ error_reporting(E_ALL & ~E_WARNING); // Reports all errors except warnings
 
     <script>
         $(document).ready(function() {
-
+            const userCredential = JSON.parse(localStorage.getItem('userCredential'));
+            const username = userCredential.email;
+            sendDataToSession({ email: username });
+            function sendDataToSession(data) {
+                $.ajax({
+                    url: 'updateSession.php', // PHP file to handle the request
+                    type: 'POST',
+                    data: {
+                        email: data.email,
+                    },
+                    success: function(response) {
+                        console.log('Response from server:', response);
+                        // alert('Data successfully added to the session!');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('Failed to add data to the session.');
+                    }
+                });
+            }
             $(".sortable").on("click", function() {
                 const column = $(this).data("column"); // Get the column name
                 const currentOrder = $(this).data("order"); // Get the current order

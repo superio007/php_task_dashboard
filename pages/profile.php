@@ -1,3 +1,6 @@
+<?php 
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +23,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../assets/css/Style.css?v=3.2.0" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
+    <?php
+    include "dbconn.php";
+    $email = $_SESSION['email'];
+
+    ?>
     <?php include "sidebar.php" ?>
     <div class="main-content position-relative max-height-vh-100 h-100">
         <!-- Navbar -->
@@ -43,6 +52,7 @@
                         <div class="h-100">
                             <h5 class="mb-1">
                                 Richard Davis
+                                <?php echo $email ; ?>
                             </h5>
                             <p class="mb-0 font-weight-normal text-sm">
                                 CEO / Co-Founder
@@ -60,9 +70,7 @@
                                             <h6 class="mb-0">Profile Information</h6>
                                         </div>
                                         <div class="col-md-4 text-end">
-                                            <a href="javascript:;">
-                                                <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
-                                            </a>
+                                            <i id="editProfile" class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
                                         </div>
                                     </div>
                                 </div>

@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Material Dashboard 3 - v3.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -142,6 +128,7 @@
     const microsoftProvider = new OAuthProvider('microsoft.com');
 
     const auth = getAuth();
+
     // For Microsoft
     document.querySelector('.Microsoft').addEventListener("click", (event) => {
       event.preventDefault();
@@ -157,6 +144,7 @@
           const idToken = credential.idToken;
           const user = result.user;
           localStorage.setItem('userCredential', JSON.stringify(user));
+          
           console.log(credential);
           console.log(accessToken);
           console.log(idToken);
@@ -179,6 +167,7 @@
           // Signed in
           const user = userCredential.user;
           localStorage.setItem("userCredential", JSON.stringify(user));
+          
           console.log(user);
           window.location.href = "index.php";
           // ...
@@ -200,6 +189,7 @@
           // The signed-in user info.
           const user = result.user;
           localStorage.setItem("userCredential", JSON.stringify(user));
+          
           console.log(user);
           window.location.href = "index.php";
           // ...
@@ -221,6 +211,7 @@
           const idToken = credential.idToken;
           const user = result.user;
           localStorage.setItem('userCredential', JSON.stringify(user));
+          
           console.log(credential);
           console.log(accessToken);
           console.log(idToken);
@@ -235,10 +226,6 @@
         });
     })
   </script>
-  <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
 </body>
 
 </html>
