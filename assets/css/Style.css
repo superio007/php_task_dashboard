@@ -208,6 +208,46 @@
 #table-head th.active {
   border-left: none;
 }
+
+/* for tables */
+#authors-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#authors-table th,
+#authors-table td {
+  text-align: center; /* Center align all text */
+  vertical-align: middle; /* Center align vertically */
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+#authors-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+#authors-table td {
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+#authors-table tbody tr:hover {
+  background-color: #f9f9f9; /* Add hover effect */
+}
+
+#authors-table thead th:first-child,
+#authors-table tbody td:first-child {
+  text-align: left; /* Left-align the first column */
+}
+
+#authors-table .badge {
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
