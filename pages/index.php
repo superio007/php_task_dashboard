@@ -333,12 +333,24 @@ error_reporting(E_ALL & ~E_WARNING); // Reports all errors except warnings
                         <div class="card-body px-0 pb-0">
                             <div class="table-responsive px-3">
                                 <table class="table align-items-center mb-0">
-                                    <thead>
+                                    <thead id="table-head">
                                         <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Topic</th>
-                                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">sector</th>
-                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">source</th>
-                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 sortable" data-column="topic" data-order="asc">
+                                                Topic
+                                                <span class="sort-icon"></span>
+                                            </th>
+                                            <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2 sortable" data-column="sector" data-order="asc">
+                                                Sector
+                                                <span class="sort-icon"></span>
+                                            </th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 sortable" data-column="source" data-order="asc">
+                                                Source
+                                                <span class="sort-icon"></span>
+                                            </th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 sortable" data-column="city" data-order="asc">
+                                                City
+                                                <span class="sort-icon"></span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody id="table-body">
@@ -392,6 +404,28 @@ error_reporting(E_ALL & ~E_WARNING); // Reports all errors except warnings
 
     <script>
         $(document).ready(function() {
+
+            $(".sortable").on("click", function() {
+                const column = $(this).data("column"); // Get the column name
+                const currentOrder = $(this).data("order"); // Get the current order
+                const newOrder = currentOrder === "asc" ? "desc" : "asc"; // Toggle order
+
+                // Update the order attribute in the clicked <th>
+                $(this).data("order", newOrder);
+
+                // Remove active class and sort-icon from all <th>
+                $(".sortable").removeClass("active");
+                $(".sort-icon").text(""); // Clear previous icons
+
+                // Add active class and sort-icon to the clicked <th>
+                $(this).addClass("active");
+                $(this).find(".sort-icon").html(newOrder === "asc" ? `<i class="fa-solid fa-lg fa-caret-up" style="color: #a2a2a2;"></i>` : `<i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i>`);
+
+                // Fetch sorted data
+                const year = $("#table_Year").val(); // Get the selected year
+                fetchTableData(year, 0, 5, column, newOrder); // Fetch sorted table data
+            });
+
             let elapsedMinutes = 0; // Counter for elapsed minutes
             const $updateElement = $(".update-timer"); // Target DOM element to update
 
@@ -556,73 +590,82 @@ error_reporting(E_ALL & ~E_WARNING); // Reports all errors except warnings
                     },
                 });
             }
-            // to fetch Table Data 
-            function fetchTableData(year, start, end) {
+            // Function to fetch table data
+            function fetchTableData(year, start, end, column = null, order = null) {
                 const requestData = {
                     year: year,
                     start: start,
-                    end: end
+                    end: end,
                 };
-                console.log(requestData);
+
+                // Add sorting parameters if provided
+                if (column && order) {
+                    requestData.column = column;
+                    requestData.order = order;
+                }
+
+                console.log("Request Data:", requestData); // Debugging
+
                 $.ajax({
-                    url: 'retriveTable.php', // Replace with the actual PHP file URL
+                    url: 'retriveTable.php', // Update with your PHP endpoint
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(requestData),
                     dataType: 'json',
                     success: function(response) {
-                        if (response.status === 'success') {
-                            const tableBody = $('#table-body');
-                            tableBody.empty(); // Clear the table before appending new data
+                        const tableBody = $('#table-body');
+                        tableBody.empty(); // Clear existing table rows
 
+                        if (response.status === 'success') {
                             if (response.regionCounts.length === 0) {
                                 tableBody.append('<tr><td colspan="4" class="text-center">No data available</td></tr>');
                             } else {
-                                let counter = start + 1; // Set the counter starting from 'start + 1'
+                                let counter = start + 1; // Starting counter
                                 response.regionCounts.forEach(row => {
                                     tableBody.append(`
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <div>${counter}</div>
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <p style="margin-left: 12px; color:#262626" class="mb-0 text-sm">${row.topic || 'Not available'}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="avatar-group mt-2">
-                                                    <p class="text-center" style="color:#262626">${row.sector ? row.sector : 'Not available'}</p>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                ${row.source 
-                                                    ? `<a target="_blank" id="source_link" href="${row.url || '#'}">${row.source.length > 50 ? row.source.substring(0, 50) + '...' : row.source}</a>` 
-                                                    : 'Not available'}
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="progress-wrapper w-75 mx-auto">
-                                                    <div>
-                                                        <p style="color:#262626">${row.city ? row.city : 'Not available'}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    `);
+                            <tr>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div>${counter}</div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <p style="margin-left: 12px; color:#262626" class="mb-0 text-sm">${row.topic || 'Not available'}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="avatar-group mt-2">
+                                        <p class="text-center" style="color:#262626">${row.sector || 'Not available'}</p>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    ${row.source
+                                        ? `<a target="_blank" id="source_link" href="${row.url || '#'}">${row.source.length > 50 ? row.source.substring(0, 50) + '...' : row.source}</a>`
+                                        : 'Not available'}
+                                </td>
+                                <td class="align-middle">
+                                    <div class="progress-wrapper w-75 mx-auto">
+                                        <div>
+                                            <p style="color:#262626">${row.city || 'Not available'}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
                                     counter++;
                                 });
                             }
                         } else {
-                            console.error('Error:', response.message);
-                            $('#table-body').html('<tr><td colspan="4" class="text-center">Error loading data</td></tr>');
+                            console.error("Error:", response.message);
+                            tableBody.append('<tr><td colspan="4" class="text-center">Error loading data</td></tr>');
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error('AJAX Error:', status, error);
+                        console.error("AJAX Error:", status, error);
                         $('#table-body').html('<tr><td colspan="4" class="text-center">An error occurred while fetching data</td></tr>');
                     }
                 });
             }
+
 
             const initialValues = {
                 intensity: $("#Bar_Year").val(),

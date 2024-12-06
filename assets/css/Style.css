@@ -205,6 +205,9 @@
   }
 }
 
+#table-head th.active {
+  border-left: none;
+}
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
