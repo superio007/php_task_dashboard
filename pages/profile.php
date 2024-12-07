@@ -153,7 +153,6 @@ session_start();
                             <div class="h-100">
                                 <h5 class="mb-1">
                                     <?php echo $getData['first_name'] . " " . $getData['last_name']; ?>
-                                    <?php echo $email; ?>
                                 </h5>
                                 <p class="mb-0 font-weight-normal text-sm">
                                     <?php $getData['position']; ?>

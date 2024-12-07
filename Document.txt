@@ -1,0 +1,142 @@
+### Project Documentation for **Data Visualization Dashboard**
+
+---
+
+## **Overview**
+
+### **Objective**:
+This project is a **Data Visualization Dashboard** created using modern web technologies to provide an interactive and insightful platform. Users can:
+- Analyze data visually using graphs, charts, and tables.
+- Filter data dynamically to explore specific metrics such as `Intensity`, `Likelihood`, `Relevance`, `Topics`, and more.
+- Manage user profiles with the ability to upload profile images.
+
+### **Technologies Used**:
+- **Frontend**: HTML, CSS, SCSS, JavaScript, jQuery, Bootstrap.
+- **Backend**: PHP, MySQL.
+- **Visualization**: Chart.js, D3.js.
+- **Database**: MySQL.
+- **Authentication**: Firebase for social login (Google, Yahoo, Microsoft).
+
+---
+
+## **Folder Structure**
+
+### **Assets**:
+- `css/`: Contains custom stylesheets and SCSS files.
+- `fonts/`: Stores font files used across the project.
+- `img/`: Stores static images.
+- `js/`: Contains JavaScript files for interactivity and AJAX calls.
+
+### **Pages**:
+- **Core Pages**:
+  - `sign-in.php`: Landing page for user login/sign-up.
+  - `index.php`: Main dashboard displaying graphs, tables, and filters.
+  - `tables.php`: Displays a complete table of database data with sorting capabilities.
+  - `profile.php`: User profile management page.
+
+- **Support Pages**:
+  - `dbconn.php`: Database connection file.
+  - `navbar.php`: Navigation bar shared across all pages.
+  - `sidebar.php`: Sidebar menu for easy navigation.
+  - `footer.php`: Footer with credits and other information.
+  - `retriveAllData.php`, `retriveData.php`, `retriveTable.php`, `retriveRegions.php`: PHP files to handle AJAX requests for data fetching.
+  - `saveProfile.php`, `updateSession.php`: Handles user profile updates and session management.
+  - `upload.php`: File upload handler for profile images.
+
+### **Tables**:
+- `insights_data.sql`: Database schema and data for insights.
+- `user_imageuploads.sql`: Stores user-uploaded profile images.
+- `user_profiles.sql`: Stores user profile information.
+
+### **Others**:
+- `readme.md`: Documentation and instructions for the project.
+
+---
+
+## **Functionality and Workflow**
+
+### **1. User Authentication**
+- **Sign-In Page (`sign-in.php`)**:
+  - Users can sign in with Google, Yahoo, or Microsoft using Firebase Authentication.
+  - Alternatively, they can create an account with a name, email, and password.
+
+### **2. Dashboard (`index.php`)**
+- Upon successful login, users are redirected to the main dashboard.
+- **Features**:
+  - **Dynamic Data Visualization**:
+    - Graphs are displayed using D3.js (e.g., Yearly Intensity Trends, Relevance Over Time).
+    - A pie chart for region overview created with Chart.js.
+  - **Data Filtering**:
+    - A dropdown allows users to select a year, updating all visualizations dynamically.
+  - **Table Insights**:
+    - A smaller table below the graphs displays random insights (`Topics`, `Sectors`, `Sources`, `City`), sortable in ascending or descending order.
+
+### **3. Data Tables (`tables.php`)**
+- Displays a comprehensive view of all the database data in a tabular format.
+- Users can:
+  - Sort data by column.
+  - Navigate between pages using pagination.
+
+### **4. Profile Management (`profile.php`)**
+- Users can view and update their profile information:
+  - **Fields**: Name, Mobile, Email, Location, Social Links.
+  - **Profile Picture**: Users can upload a profile image or edit their existing one.
+- If a new user logs in, they are prompted to fill out their profile details.
+
+### **5. Breadcrumb Navigation**
+- A breadcrumb trail on the top-left corner of every page helps users track their current location within the app.
+
+---
+
+## **Backend Logic**
+
+### **Database**
+- **Tables**:
+  - `insights_data`: Stores data for visualization and table display.
+  - `user_profiles`: Contains user profile details.
+  - `user_imageuploads`: Stores references to uploaded profile pictures.
+
+### **API and AJAX**
+- Data fetching and updates are powered by AJAX calls:
+  - `retriveAllData.php`: Fetches all data for visualizations.
+  - `retriveTable.php`: Fetches paginated table data.
+  - `retriveRegions.php`: Retrieves region-specific data for filters.
+  - `saveProfile.php`: Saves profile updates to the database.
+
+### **Session Management**
+- PHP sessions are used to store user login status and profile information.
+
+---
+
+## **Key Features**
+
+1. **Interactive Graphs**:
+   - Dynamic rendering of graphs based on year selection.
+   - Intuitive and visually appealing D3.js and Chart.js visuals.
+
+2. **Filters and Sorting**:
+   - Multiple filters for year, region, topic, and sector.
+   - Table sorting functionality for better data exploration.
+
+3. **User-Friendly Profile Management**:
+   - Editable profile details with image upload functionality.
+
+4. **Responsive Design**:
+   - Built with Bootstrap to ensure compatibility across devices.
+
+---
+
+## **Future Enhancements**
+1. **Advanced Analytics**:
+   - Add more visualizations such as heatmaps or tree maps for deeper insights.
+2. **Export Options**:
+   - Allow users to export tables or graphs as PDF or Excel files.
+3. **Enhanced Authentication**:
+   - Add two-factor authentication for enhanced security.
+4. **Notification System**:
+   - Notify users of updates or changes to the dashboard in real-time.
+
+---
+
+## **Conclusion**
+This project combines modern web technologies to deliver an interactive and user-friendly dashboard. It provides insightful visualizations and an organized interface for data exploration and user management.
