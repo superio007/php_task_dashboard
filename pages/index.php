@@ -337,19 +337,20 @@ error_reporting(E_ALL & ~E_WARNING); // Reports all errors except warnings
                                         <tr>
                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 sortable" data-column="topic" data-order="asc">
                                                 Topic
-                                                <span class="sort-icon"></span>
+
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2 sortable" data-column="sector" data-order="asc">
                                                 Sector
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 sortable" data-column="source" data-order="asc">
                                                 Source
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 sortable" data-column="city" data-order="asc">
                                                 City
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -404,9 +405,33 @@ error_reporting(E_ALL & ~E_WARNING); // Reports all errors except warnings
 
     <script>
         $(document).ready(function() {
+            if (localStorage.getItem("userCredential")) {
+                $("#login-Div").html(`
+                    <a class="nav-link text-dark" id="logout">
+                        <i class="material-symbols-rounded opacity-5">assignment</i>
+                        <span class="nav-link-text ms-1">Logout</span>
+                    </a>
+                `);
+                            $("#logout").on("click", function() {
+                                localStorage.removeItem("userCredential");
+                                window.location.href = "sign-in.php";
+                            });
+                        } else {
+                            $("#login-Div").html(`
+                    <a class="nav-link text-dark" href="sign-in.php">
+                        <i class="material-symbols-rounded opacity-5">assignment</i>
+                        <span class="nav-link-text ms-1">Log In</span>
+                    </a>
+                `);
+                window.location.href = "sign-in.php";
+            }
+
             const userCredential = JSON.parse(localStorage.getItem('userCredential'));
             const username = userCredential.email;
-            sendDataToSession({ email: username });
+            sendDataToSession({
+                email: username
+            });
+
             function sendDataToSession(data) {
                 $.ajax({
                     url: 'updateSession.php', // PHP file to handle the request
@@ -481,27 +506,7 @@ error_reporting(E_ALL & ~E_WARNING); // Reports all errors except warnings
                     fetchTableData(initialValues.table, start, start + limit);
                 }
             });
-            if (localStorage.getItem("userCredential")) {
-                loginDiv.html(`
-                    <a class="nav-link text-dark" id="logout">
-                        <i class="material-symbols-rounded opacity-5">assignment</i>
-                        <span class="nav-link-text ms-1">Logout</span>
-                    </a>
-                `);
 
-                $("#logout").on("click", function() {
-                    localStorage.removeItem("userCredential");
-                    window.location.href = "sign-in.php";
-                });
-            } else {
-                loginDiv.html(`
-                    <a class="nav-link text-dark" href="sign-in.php">
-                        <i class="material-symbols-rounded opacity-5">assignment</i>
-                        <span class="nav-link-text ms-1">Log In</span>
-                    </a>
-                `);
-                window.location.href = "sign-in.php";
-            }
             const calltoRetrieve = (type, year, chartId, isLineChart = false) => {
                 $.ajax({
                     url: "retriveData.php",

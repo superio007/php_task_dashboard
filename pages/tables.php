@@ -57,30 +57,31 @@
                                             </th>
                                             <th class="text-uppercase text-secondary text-dark text-sm font-weight-bolder opacity-7 sortable" data-column="topic" data-order="asc">
                                                 Topics
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-uppercase text-secondary text-dark text-sm font-weight-bolder opacity-7 ps-2 sortable" data-column="intensity" data-order="asc">
                                                 Intensity
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-center text-uppercase text-secondary text-dark text-sm font-weight-bolder opacity-7 sortable" data-column="country" data-order="asc">
                                                 Country
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-center text-uppercase text-secondary text-dark text-sm font-weight-bolder opacity-7 sortable" data-column="region" data-order="asc">
                                                 Region
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-center text-uppercase text-secondary text-dark text-sm font-weight-bolder opacity-7 sortable" data-column="city" data-order="asc">
                                                 City
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-center text-uppercase text-secondary text-dark text-sm font-weight-bolder opacity-7 sortable" data-column="relevance" data-order="asc">
                                                 Relevance
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                             <th class="text-center text-uppercase text-secondary text-dark text-sm font-weight-bolder opacity-7 sortable" data-column="likelihood" data-order="asc">
                                                 Likelihood
-                                                <span class="sort-icon"></span>
+                                                <span class="sort-icon"><i class="fa-solid fa-lg fa-caret-down" style="color: #a2a2a2;"></i></span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -179,25 +180,25 @@
                                                 <span class="text-xs">${counter + ")"}</span>
                                             </td>
                                             <td>
-                                                <span class="text-xs">${row.topic}</span>
+                                                <span class="text-xs">${row.topic || "Not Available"}</span>
                                             </td>
                                             <td>
-                                                <span class="text-xs">${row.intensity}</span>
+                                                <span class="text-xs">${row.intensity || "Not Available"}</span>
                                             </td>
                                             <td>
-                                                <span class="text-xs">${row.country}</span>
+                                                <span class="text-xs">${row.country || "Not Available"}</span>
                                             </td>
                                             <td>
-                                                <span class="text-xs">${row.region}</span>
+                                                <span class="text-xs">${row.region || "Not Available"}</span>
                                             </td>
                                             <td>
-                                                <span class="text-xs">${row.city}</span>
+                                                <span class="text-xs">${row.city || "Not Available"}</span>
                                             </td>
                                             <td>
-                                                <span class="text-xs">${row.relevance}</span>
+                                                <span class="text-xs">${row.relevance || "Not Available"}</span>
                                             </td>
                                             <td>
-                                                <span class="text-xs">${row.likelihood}</span>
+                                                <span class="text-xs">${row.likelihood || "Not Available"}</span>
                                             </td>
                                         </tr>
                         `);

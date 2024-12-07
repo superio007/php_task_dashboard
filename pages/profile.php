@@ -53,7 +53,6 @@ session_start();
     $getData = get_data($conn, $email);
     if ($getData != null) {
         $imgPath = retrive($conn, $email);
-        var_dump($imgPath);
     }
 
     ?>
@@ -172,7 +171,7 @@ session_start();
                                                 <h6 class="mb-0">Profile Information</h6>
                                             </div>
                                             <div class="col-md-4 text-end">
-                                                <i id="editProfile" class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
+                                                <i id="editProfile" class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="modal" data-bs-target="#updateProfileModal" title="Edit Profile"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -201,6 +200,75 @@ session_start();
                                         </ul>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="UpdateProfileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editProfileForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" placeholder="Enter First Name" required value="<?php echo $getData['first_name']; ?>">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name" required value="<?php echo $getData['last_name']; ?>">
+                                        </div>
+                                    </div>
+                                    <label for="position" class="form-label mt-3">Position</label>
+                                    <input type="text" class="form-control" id="position" placeholder="Enter Position" value="<?php echo $getData['position']; ?>">
+                                    <label for="summary" class="form-label mt-3">Summary</label>
+                                    <textarea class="form-control" id="summary" rows="3" placeholder="Enter Summary"><?php echo $getData['summary']; ?></textarea>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <label for="mobileNumber" class="form-label">Mobile Number</label>
+                                            <input type="tel" class="form-control" id="mobileNumber" placeholder="Enter Mobile Number" required value="<?php echo $getData['mobile_number']; ?>">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" placeholder="Enter Email" required value="<?php echo $getData['email']; ?>">
+                                        </div>
+                                    </div>
+                                    <label for="location" class="form-label mt-3">Location</label>
+                                    <input type="text" class="form-control" id="location" placeholder="Enter Location" value="<?php echo $getData['location']; ?>">
+                                    <div class="row mt-3">
+                                        <div class="col-md-4">
+                                            <label for="facebookLink" class="form-label">Facebook URL</label>
+                                            <input type="url" class="form-control" id="facebookLink" placeholder="Enter Facebook URL" value="<?php echo $getData['facebook_link']; ?>">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="twitterUrl" class="form-label">Twitter URL</label>
+                                            <input type="url" class="form-control" id="twitterUrl" placeholder="Enter Twitter URL" value="<?php echo $getData['twitter_url']; ?>">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="instagramUrl" class="form-label">Instagram URL</label>
+                                            <input type="url" class="form-control" id="instagramUrl" placeholder="Enter Instagram URL" value="<?php echo $getData['instagram_url']; ?>">
+                                        </div>
+                                    </div>
+                                    <!-- Separate Image Upload Button -->
+                                    <div class="mt-3">
+                                        <label for="profileImage" class="form-label">Upload Profile Image</label>
+                                        <div class="d-flex align-items-baseline">
+                                            <input type="file" style="width: 70%;" class="form-control me-2" id="profileImage" accept="image/*">
+                                            <button type="button" class="btn btn-secondary" id="uploadImageBtn">Upload Image</button>
+                                        </div>
+                                        <div id="successMessage">
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="saveProfile">Save Changes</button>
                             </div>
                         </div>
                     </div>
@@ -327,6 +395,9 @@ session_start();
                             icon: 'success',
                             title: 'Profile Saved',
                             text: 'Your profile has been saved successfully!',
+                        }).then(() => {
+                            // Reload the page after the alert is dismissed
+                            location.reload();
                         });
                     } else {
                         // Use SweetAlert for error message
@@ -334,8 +405,12 @@ session_start();
                             icon: 'error',
                             title: 'Error',
                             text: data.message || 'Failed to save profile. Please try again.',
+                        }).then(() => {
+                            // Reload the page after the alert is dismissed (optional for errors)
+                            location.reload();
                         });
                     }
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -349,6 +424,8 @@ session_start();
             // Hide the modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
             modal.hide();
+            const updatemodal = bootstrap.Modal.getInstance(document.getElementById('updateProfileModal'));
+            updatemodal.hide();
         });
     </script>
     <!-- Github buttons -->

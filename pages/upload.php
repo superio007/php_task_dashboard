@@ -47,13 +47,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (move_uploaded_file($_FILES["userImage"]["tmp_name"], $targetFilePath)) {
             echo "The file " . htmlspecialchars($fileName) . " has been uploaded.<br>";
 
-            // Save file path to the database
-            $sql = "INSERT INTO user_imageuploads (username, image_path) VALUES ('$username', '$targetFilePath')";
-            if ($conn->query($sql) === TRUE) {
-                echo "Image path saved to database successfully!<br>";
+            // Check if the username exists in the database
+            $checkStmt = $conn->prepare("SELECT id FROM user_imageuploads WHERE username = ?");
+            $checkStmt->bind_param("s", $username);
+            $checkStmt->execute();
+            $result = $checkStmt->get_result();
+
+            if ($result->num_rows > 0) {
+                // Username exists, update the record
+                $updateStmt = $conn->prepare("UPDATE user_imageuploads SET image_path = ? WHERE username = ?");
+                $updateStmt->bind_param("ss", $targetFilePath, $username);
+                if ($updateStmt->execute()) {
+                    echo "Image path updated successfully in the database!<br>";
+                } else {
+                    echo "Error updating image path in the database: " . $updateStmt->error . "<br>";
+                }
+                $updateStmt->close();
             } else {
-                echo "Error saving image path to database: " . $conn->error . "<br>";
+                // Username does not exist, insert a new record
+                $insertStmt = $conn->prepare("INSERT INTO user_imageuploads (username, image_path) VALUES (?, ?)");
+                $insertStmt->bind_param("ss", $username, $targetFilePath);
+                if ($insertStmt->execute()) {
+                    echo "Image path saved to database successfully!<br>";
+                } else {
+                    echo "Error saving image path to database: " . $insertStmt->error . "<br>";
+                }
+                $insertStmt->close();
             }
+
+            $checkStmt->close();
         } else {
             echo "Sorry, there was an error uploading your file.<br>";
         }

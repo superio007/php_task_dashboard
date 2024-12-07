@@ -14,30 +14,63 @@ try {
         exit;
     }
 
-    // Prepare SQL query
-    $stmt = $conn->prepare("INSERT INTO user_profiles (first_name, last_name, position, summary, mobile_number, email, location, facebook_link, twitter_url, instagram_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param(
-        "ssssssssss",
-        $data['firstName'],
-        $data['lastName'],
-        $data['position'],
-        $data['summary'],
-        $data['mobileNumber'],
-        $data['email'],
-        $data['location'],
-        $data['facebookLink'],
-        $data['twitterUrl'],
-        $data['instagramUrl']
-    );
+    // Check if the email already exists in the database
+    $checkStmt = $conn->prepare("SELECT id FROM user_profiles WHERE email = ?");
+    $checkStmt->bind_param("s", $data['email']);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
 
-    // Execute the query
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true]);
+    if ($result->num_rows > 0) {
+        // Email exists, update the record
+        $updateStmt = $conn->prepare("UPDATE user_profiles SET first_name = ?, last_name = ?, position = ?, summary = ?, mobile_number = ?, location = ?, facebook_link = ?, twitter_url = ?, instagram_url = ? WHERE email = ?");
+        $updateStmt->bind_param(
+            "ssssssssss",
+            $data['firstName'],
+            $data['lastName'],
+            $data['position'],
+            $data['summary'],
+            $data['mobileNumber'],
+            $data['location'],
+            $data['facebookLink'],
+            $data['twitterUrl'],
+            $data['instagramUrl'],
+            $data['email']
+        );
+
+        if ($updateStmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Record updated successfully.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Database error: ' . $updateStmt->error]);
+        }
+
+        $updateStmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Database error: ' . $stmt->error]);
+        // Email does not exist, insert a new record
+        $insertStmt = $conn->prepare("INSERT INTO user_profiles (first_name, last_name, position, summary, mobile_number, email, location, facebook_link, twitter_url, instagram_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $insertStmt->bind_param(
+            "ssssssssss",
+            $data['firstName'],
+            $data['lastName'],
+            $data['position'],
+            $data['summary'],
+            $data['mobileNumber'],
+            $data['email'],
+            $data['location'],
+            $data['facebookLink'],
+            $data['twitterUrl'],
+            $data['instagramUrl']
+        );
+
+        if ($insertStmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Record inserted successfully.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Database error: ' . $insertStmt->error]);
+        }
+
+        $insertStmt->close();
     }
 
-    $stmt->close();
+    $checkStmt->close();
     $conn->close();
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);

@@ -61,12 +61,12 @@
               <div class="card-body">
                 <form role="form" method="post" class="text-start">
                   <div class="input-group input-group-outline my-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" id="email" class="form-control">
+                    <!-- <label class="form-label">Email</label> -->
+                    <input type="email" id="email" placeholder="Enter Email" class="form-control">
                   </div>
                   <div class="input-group input-group-outline mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control">
+                    <!-- <label class="form-label">Password</label> -->
+                    <input type="password" id="password" placeholder="Enter Password" class="form-control">
                   </div>
                   <div class="form-check form-switch d-flex align-items-center mb-3">
                     <input class="form-check-input" type="checkbox" id="rememberMe" checked>
@@ -157,6 +157,7 @@
           console.error(errorMessage);
         });
     })
+    // for sign in
     document.getElementById('loginbtn').addEventListener('click', (event) => {
       event.preventDefault();
       console.log("Log in");

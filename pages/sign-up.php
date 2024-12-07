@@ -58,16 +58,16 @@
                 <div class="card-body">
                   <form role="form" method="post">
                     <div class="input-group input-group-outline mb-3">
-                      <label class="form-label">Name</label>
-                      <input type="text" id="name" class="form-control">
+                      <!-- <label class="form-label">Name</label> -->
+                      <input type="text" id="name" class="form-control" placeholder="Enter Name">
                     </div>
                     <div class="input-group input-group-outline mb-3">
-                      <label class="form-label">Email</label>
-                      <input type="email" id="email" class="form-control">
+                      <!-- <label class="form-label">Email</label> -->
+                      <input type="email" id="email" class="form-control" placeholder="Enter Email">
                     </div>
                     <div class="input-group input-group-outline mb-3">
-                      <label class="form-label">Password</label>
-                      <input type="password" id="password" class="form-control">
+                      <!-- <label class="form-label">Password</label> -->
+                      <input type="password" id="password" class="form-control" placeholder="Enter Password">
                     </div>
                     <div class="form-check form-check-info text-start ps-0">
                       <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
@@ -112,9 +112,12 @@
     } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
     import {
       getAuth,
-      signInWithEmailAndPassword,
       signInWithPopup,
       GoogleAuthProvider,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      FacebookAuthProvider,
       OAuthProvider
     } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
     const firebaseConfig = {
@@ -161,23 +164,25 @@
           console.error(errorMessage);
         });
     })
-    document.getElementById('SignBtn').addEventListener('click', (event) => {
+    // for sign up
+    document.getElementById("SignBtn").addEventListener("click", (event) => {
       event.preventDefault();
-      console.log("Log in");
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      signInWithEmailAndPassword(auth, email, password)
+      console.log("Sign in");
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed in
+          // Signed up
           const user = userCredential.user;
           localStorage.setItem("userCredential", JSON.stringify(user));
-          console.log(user);
+          console.log("sign up verified", user);
           window.location.href = "index.php";
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          // ..
         });
     });
     // for google popup and registration

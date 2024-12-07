@@ -193,6 +193,9 @@
 }
 
 /* poninters  */
+#editProfile:hover{
+  cursor: pointer;
+}
 
 #login-Div,.Microsoft,.Yahoo,.google{
   cursor: pointer;

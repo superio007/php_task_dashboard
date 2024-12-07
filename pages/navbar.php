@@ -27,11 +27,6 @@ $currentPage = basename($fullPath);
             <?php endif; ?>
           </ol>
         </div>
-        <div>
-          <a href="../pages/sign-in.php" class="nav-link text-body font-weight-bold px-0">
-            <i class="material-symbols-rounded">account_circle</i>
-          </a>
-        </div>
       </nav>
     </div>
   </nav>
