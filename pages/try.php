@@ -25,9 +25,9 @@
 
 <body>
     <!-- Trigger Button -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+    <a type="button" href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal">
         Edit Profile
-    </button>
+    </a>
 
     <!-- Modal -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
