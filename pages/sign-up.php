@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-  <main class="main-content  mt-0">
+  <main class="main-content mt-0">
     <section>
       <div class="page-header min-vh-100">
         <div class="container">
@@ -56,19 +56,17 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form role="form" method="post">
+                  <form id="signupForm" role="form" method="post">
                     <div class="input-group input-group-outline mb-3">
-                      <!-- <label class="form-label">Name</label> -->
                       <input type="text" id="name" class="form-control" placeholder="Enter Name">
                     </div>
                     <div class="input-group input-group-outline mb-3">
-                      <!-- <label class="form-label">Email</label> -->
                       <input type="email" id="email" class="form-control" placeholder="Enter Email">
                     </div>
                     <div class="input-group input-group-outline mb-3">
-                      <!-- <label class="form-label">Password</label> -->
                       <input type="password" id="password" class="form-control" placeholder="Enter Password">
                     </div>
+                    <small id="passwordError" class="text-danger d-none">Password must be at least 6 characters long.</small>
                     <div class="form-check form-check-info text-start ps-0">
                       <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
                       <label class="form-check-label" for="flexCheckDefault">
@@ -168,23 +166,49 @@
     document.getElementById("SignBtn").addEventListener("click", (event) => {
       event.preventDefault();
       console.log("Sign in");
-      let email = document.getElementById("email").value;
-      let password = document.getElementById("password").value;
+
+      // Get input values
+      let email = document.getElementById("email").value.trim();
+      let password = document.getElementById("password").value.trim();
+      let passwordError = document.getElementById("passwordError");
+
+      // Clear previous error
+      passwordError.classList.add("d-none");
+
+      // Validate password length
+      if (password.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters long.";
+        passwordError.classList.remove("d-none");
+        return; // Stop execution if validation fails
+      }
+
+      // Proceed with sign up if validation passes
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
           localStorage.setItem("userCredential", JSON.stringify(user));
-          console.log("sign up verified", user);
-          window.location.href = "index.php";
+          console.log("Sign up verified", user);
+          window.location.href = "index.php"; // Redirect to the desired page
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          // ..
+
+          // Handle errors (you can customize these messages)
+          if (errorCode === "auth/email-already-in-use") {
+            passwordError.textContent = "Email is already in use.";
+          } else if (errorCode === "auth/invalid-email") {
+            passwordError.textContent = "Invalid email address.";
+          } else {
+            passwordError.textContent = errorMessage;
+          }
+          passwordError.classList.remove("d-none");
+          console.error("Error during sign up:", errorMessage);
         });
     });
+
     // for google popup and registration
     document.querySelector(".google").addEventListener("click", (event) => {
       event.preventDefault();
